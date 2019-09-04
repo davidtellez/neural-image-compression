@@ -12,6 +12,7 @@ The paper can be accessed in the following link: https://doi.org/10.1109/TPAMI.2
 
 This is a work in progress and more items will be added with time:
 
-* Synthetic dataset. These images can be generated using code in this repository (```synthetic_data_generation.py```) or directly downloaded from https://doi.org/10.5281/zenodo.3381498.
+* Synthetic dataset. These images can be generated using code in the present repository (```synthetic_data_generation.py```) or directly downloaded from https://doi.org/10.5281/zenodo.3381498.
 * Colorectal (CRC) dataset. To be announced soon.
+* Compress a given whole-slide image. A whole-slide image can be compressed using code in the present repository (```featurize_wsi.py```) and pretrained models (```./models/encoders_patches_pathology/*.h5```).
 
