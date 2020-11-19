@@ -321,13 +321,13 @@ def create_json(input_dir, output_path, sample_ratio=1.0):
 
     # Test images
     data = {}
-    df_test = pd.DataFrame.from_csv(join(input_dir, 'test.csv'))
+    df_test = pd.read_csv(join(input_dir, 'test.csv'), header=0, index_col=0)
     df_test = df_test.sample(int(len(df_test)*sample_ratio), replace=False)
     df_test['tile_id'] = df_test['tile'].apply(lambda x: 'test-' + x[:-4])
     data['test'] = list(df_test['tile_id'])
 
     # Train images
-    df_train = pd.DataFrame.from_csv(join(input_dir, 'train.csv'))
+    df_train = pd.read_csv(join(input_dir, 'train.csv'), header=0, index_col=0)
     df_train = df_train.sample(int(len(df_train)*sample_ratio), replace=False)
     df_train['tile_id'] = df_train['tile'].apply(lambda x: 'train-' + x[:-4])
 

@@ -16,3 +16,5 @@ This is a work in progress and more items will be added with time:
 * Colorectal (CRC) dataset. To be announced soon.
 * Compress a given whole-slide image. A whole-slide image can be compressed using code in the present repository (```featurize_wsi.py```) and pretrained models (```./models/encoders_patches_pathology/*.h5```).
 
+works with keras 2.2.4 and tensorflow 1.14
+
