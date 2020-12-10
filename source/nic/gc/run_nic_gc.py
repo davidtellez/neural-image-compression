@@ -57,7 +57,7 @@ def _convert_mha_to_npy(path, out_path, overwrite=False):
     np.save(out_path, arr)
     print('saved %s with shape %s' % (out_path, str(arr.shape)))
 
-def run_nic_on_gc(input_path, output_dir, token=None, upload_session_wait=1200, job_wait=8400):
+def run_nic_on_gc_image_by_image(input_path, output_dir, token=None, upload_session_wait=1200, job_wait=8400):
     output_dir = Path(output_dir)
     if not output_dir.exists():
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -88,6 +88,28 @@ def run_nic_on_gc(input_path, output_dir, token=None, upload_session_wait=1200, 
         #         print('renamed %s to %s' % (op.name, renamed.name))
         #         overlay_out_pathes[i] = renamed
 
+    convert_mha_to_npy(output_dir, overwrite=False)
+    print('Done!')
+
+def run_nic_on_gc(input_path, output_dir, token=None, upload_session_wait=1200, job_wait=8400):
+    output_dir = Path(output_dir)
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True, exist_ok=True)
+    allowed_ext = ['.tif', '.tiff']
+    input_path = Path(input_path)
+    if input_path.is_dir():
+        in_pathes = [p for p in input_path.iterdir() if p.is_file() and p.suffix in allowed_ext]
+    else:
+        in_pathes = []
+        if input_path.suffix in allowed_ext:
+            in_pathes.append(input_path)
+
+    if len(in_pathes)==0: raise ValueError('no pathes found in %s' % str(input_path))
+    print('processing %d pathes' % len(in_pathes))
+
+    overlay_out_pathes = cli(input_path=input_path, output_dir=output_dir, algorithm_title=title,
+                                              upload_session_wait=upload_session_wait, job_wait=job_wait,
+                                              token=token)
     convert_mha_to_npy(output_dir, overwrite=False)
     print('Done!')
 

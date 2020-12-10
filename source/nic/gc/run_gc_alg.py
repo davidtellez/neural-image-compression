@@ -83,6 +83,7 @@ class JobExecutor(Client):
             raise IOError(
                 f"Images were not uploaded. The upload session has {us['status'].lower()}"
             )
+        sleep(3)#sometimes http-error if trying to access image-job to soon
         return list_of_uploaded_image_urls
 
     def wait_until_job_is_finished(self, job_url, image_name):
@@ -159,16 +160,14 @@ class JobExecutor(Client):
         return job_url_list[0]
 
     def run(self):
-        print('uploading...')
+        print('uploading...', end='')
         upload_session_pk = self.submit_upload_session()
-        list_of_uploaded_image_urls = self.wait_until_upload_session_is_finished(
-            upload_session_pk
-        )
+        list_of_uploaded_image_urls = self.wait_until_upload_session_is_finished(upload_session_pk)
         for uploaded_image_url in list_of_uploaded_image_urls:
             uploaded_image_pk = uploaded_image_url[:-1].split("/")[-1]
             uploaded_image = self.images.detail(uploaded_image_pk)
-            image_name = uploaded_image["name"]
-            image_name = Path(image_name).stem
+            image_name = Path(uploaded_image["name"]).stem
+            # image_name = Path(image_name).stem
             if image_name.endswith('_'):#gc appends an underscore to the name for some reason
                 image_name = image_name[:-1]
             job_url = self.get_job_url(uploaded_image_pk)
